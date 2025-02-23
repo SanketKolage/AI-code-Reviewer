@@ -1,33 +1,43 @@
-import React, { useState } from "react";
-import "./Header.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!isMobileMenuOpen);
+  const navigate = useNavigate();
+  // const username = localStorage.getItem("email") || "User";
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    // Fetch username from localStorage on mount
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
   };
 
   return (
-    <header className="header">
-      <div className="logo">
-        <a href="/">AI CODE REVIEWER</a>
+    <nav className="navbar navbar-light bg-light px-3">
+      <span className="navbar-brand">Code Reviewer</span>
+
+      {/* ✅ User Dropdown in Right Corner */}
+      <div className="dropdown ms-auto">
+        <button className="btn btn-light dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
+          {username} ⬇
+        </button>
+        {showDropdown && (
+          <ul className="dropdown-menu show dropdown-menu-end">
+            <li>
+              <button className="dropdown-item text-danger " onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          </ul>
+        )}
       </div>
-      <nav className={`nav ${isMobileMenuOpen ? "active" : ""}`}>
-        <ul className="nav-list">
-          <li>
-            <a href="/">Home</a>
-          </li>
-         
-         
-        </ul>
-      </nav>
-      <div className="menu-toggle" onClick={toggleMobileMenu}>
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
-      </div>
-    </header>
+    </nav>
   );
 };
 
