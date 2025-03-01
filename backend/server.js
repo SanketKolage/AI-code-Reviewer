@@ -36,7 +36,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import aiRoutes from "./src/routes/ai.routes.js";
 
 const app = express();
-const PORT = process.env.PORT || 10000; // Ensure Render uses its assigned port
+const PORT = process.env.PORT || 3000; // Ensure Render uses its assigned port
 
 app.use(cors());
 app.use(json());
